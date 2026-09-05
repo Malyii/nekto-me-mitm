@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>nekto-me-mitm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=Unbounded:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="control.css">
+</head>
+
+<body class="dark-theme">
+  <main class="main-card">
+    <header class="card-header">
+      <div class="header-left">
+        <h1 class="app-title">nekto-me-mitm</h1>
+      </div>
+      <div class="header-actions">
+        <button id="toggleMicBtn" class="action-btn btn-outline" data-tooltip="Microphone is off — click to enable" aria-label="Microphone is off — click to enable" aria-pressed="false" aria-busy="false">
+          <svg class="icon-mic-off" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+            <path d="M9 9v3a3 3 0 0 0 5.12 2.12M15 9.34V4a3 3 0 0 0-5.94-.6"></path>
+            <path d="M17 16.95A7 7 0 0 1 5 12v-2m14 0v2a7 7 0 0 1-.11 1.23"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+          <svg class="icon-mic-on" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+            <line x1="12" y1="19" x2="12" y2="23"></line>
+            <line x1="8" y1="23" x2="16" y2="23"></line>
+          </svg>
+        </button>
+        <button id="toggleSoundpadBtn" class="action-btn btn-outline" data-tooltip="Soundpad" aria-label="Soundpad">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+        </button>
+        <button id="headerStartAllBtn" class="action-btn btn-outline btn-start-all" data-tooltip="Start all tabs" aria-label="Start all tabs">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <polygon points="6 4 20 12 6 20"></polygon>
+          </svg>
+        </button>
+        <button id="headerStopAllBtn" class="action-btn btn-outline" data-tooltip="Stop all tabs" aria-label="Stop all tabs">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <rect x="5.5" y="5.5" width="13" height="13" rx="1.5"></rect>
+          </svg>
+        </button>
+        <button id="headerCloseAllBtn" class="action-btn btn-outline btn-danger-hover" data-tooltip="Close all tabs" aria-label="Close all tabs">
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="menu-body">
+      <section class="content-area">
+        <div id="connections-tab" class="tab-content active">
+          <div class="group-box">
+            <div id="tabGrid" class="tab-grid"></div>
+            <div id="emptyState" class="empty-state">
+              <div class="empty-icon">
+                <svg viewBox="0 0 24 24" width="36" height="36" stroke="currentColor" stroke-width="1.5" fill="none"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+              </div>
+              <h3>No Active Tabs</h3>
+              <p>Tabs will appear here once connected</p>
+            </div>
+          </div>
+
+          <div class="soundpad-panel compact hidden" id="soundpadPanel">
+            <div class="sp-header-row">
+              <div class="sp-player-shell">
+                <div class="sp-transport">
+                  <button type="button" class="sp-dial main" id="sp-pause" data-tooltip="Play / Pause">
+                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="margin-left: 2px;">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="display:none;">
+                      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="sp-player-main">
+                  <div class="sp-player-info">
+                    <div class="sp-title" id="sp-now-title">Idle...</div>
+                  </div>
+                  <div class="sp-seek-row">
+                    <span class="sp-time" id="sp-time-curr">0:00</span>
+                    <div class="sp-seek-wrap">
+                      <input type="range" id="sp-seek" class="sp-seek" min="0" max="1000" value="0" step="1">
+                    </div>
+                    <span class="sp-time" id="sp-time-dur">0:00</span>
+                  </div>
+                </div>
+
+                <div class="sp-vol-wrapper">
+                  <div class="sp-volume-control" data-tooltip="Soundpad volume for strangers">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                      stroke-linecap="round" stroke-linejoin="round" class="sp-vol-icon">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <input type="range" id="sp-volume-peer" class="sp-vol-slider" min="0" max="1.5" step="0.05" value="0.85">
+                  </div>
+                  <span class="sp-volume-divider"></span>
+                  <div class="sp-volume-control" data-tooltip="Soundpad volume for you">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                      stroke-linecap="round" stroke-linejoin="round" class="sp-vol-icon">
+                      <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                    </svg>
+                    <input type="range" id="sp-volume-monitor" class="sp-vol-slider" min="0" max="1.5" step="0.05" value="0.85">
+                  </div>
+                </div>
+              </div>
+
+              <div class="sp-header-right">
+                <div class="sp-tabs">
+                  <button type="button" class="sp-tab active" data-tab="search">All</button>
+                  <button type="button" class="sp-tab" data-tab="fav">Favorites</button>
+                  <button type="button" class="sp-tab" data-tab="recent">Recent</button>
+                </div>
+
+                <div class="sp-search-row">
+                  <svg class="sp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                  <input type="search" id="sp-search-input" placeholder="Search sounds..." autocomplete="off">
+                </div>
+              </div>
+            </div>
+
+            <div class="sp-library">
+              <div id="sp-grid" class="soundpad-grid compact-grid">
+                <div class="sp-loading">Loading library...</div>
+              </div>
+              <div class="sp-pagination-row hidden" id="sp-pagination-row">
+                <button type="button" class="sp-page-btn" id="sp-page-prev" data-tooltip="Previous">
+                  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <span id="sp-page-info">1 / 1</span>
+                <button type="button" class="sp-page-btn" id="sp-page-next" data-tooltip="Next">
+                  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M9 18l6-6-6-6" />
+                  </svg>
+                </button>
+                <button type="button" class="sp-load-more" id="sp-load-more" data-tooltip="Load more">
+                  <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="source">
+      <a class="project-link" href="https://github.com/Malyii/nekto-me-mitm" target="_blank" rel="noreferrer">
+        <span class="repo-mark" aria-hidden="true">
+          <svg class="github-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </span>
+        <span><strong>Open Source on GitHub</strong><small>github.com/Malyii/nekto-me-mitm</small></span>
+        <span class="arrow-ext" aria-hidden="true">↗</span>
+      </a>
+    </footer>
+  </main>
+
+  <script type="module" src="control.js"></script>
+</body>
+
+</html>

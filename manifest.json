@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "nekto-me-mitm",
+  "version": "1.0.0",
+  "description": "https://github.com/Malyii/nekto-me-mitm",
+  "permissions": [
+    "tabs",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "*://*.nekto.me/*",
+    "*://nekto.me/*",
+    "*://uwupad.me/*",
+    "*://*.uwupad.me/*"
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "uwupad",
+        "enabled": true,
+        "path": "rules/soundpad-network.json"
+      }
+    ]
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "nekto-me-mitm"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://nekto.me/*",
+        "*://*.nekto.me/*"
+      ],
+      "js": [
+        "modules/fpt.js",
+        "modules/tab-isolation.js",
+        "modules/audio-inj.js",
+        "modules/control-inj.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "*://nekto.me/*",
+        "*://*.nekto.me/*"
+      ],
+      "js": [
+        "modules/bridge.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "ISOLATED"
+    }
+  ]
+}
